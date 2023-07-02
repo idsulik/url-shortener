@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/idsulik/url-shortener/internal/alias"
 	"github.com/idsulik/url-shortener/internal/config"
@@ -29,7 +30,17 @@ func main() {
 	router := routerpackage.New()
 	router.Use(loggermiddleware.New(log))
 	router.Use(middleware.URLFormat)
-	router.Post("/api/shorten", save.New(log, aliasGenerator, storage))
+	router.Route("/api", func(r chi.Router) {
+		router.Route("/url", func(r chi.Router) {
+			router.Use(
+				middleware.BasicAuth(
+					"url-shortener",
+					map[string]string{cfg.HttpServer.User: cfg.HttpServer.Password},
+				),
+			)
+			router.Post("/shorten", save.New(log, aliasGenerator, storage))
+		})
+	})
 	router.Get("/{alias}", redirect.New(log, storage))
 
 	if err != nil {

@@ -13,6 +13,8 @@ type HttpServer struct {
 	ReadTimeout  time.Duration `yaml:"read_timeout" env-default:"5s"`
 	WriteTimeout time.Duration `yaml:"write_timeout" env-default:"10s"`
 	IdleTimeout  time.Duration `yaml:"idle_timeout" env-default:"60s"`
+	User         string        `yaml:"user" env-required:"true"`
+	Password     string        `yaml:"password" env-required:"true" env:"HTTP_SERVER_PASSWORD"`
 }
 
 type Config struct {
