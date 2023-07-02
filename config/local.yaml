@@ -1,5 +1,6 @@
 storage_path: "./storage/storage.db"
 http_server:
   port: 8080
-  timeout: 3s
+  read_timeout: 3s
+  write_timeout: 3s
   idle_timeout: 60s

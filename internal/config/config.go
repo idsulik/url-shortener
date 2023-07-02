@@ -8,15 +8,17 @@ import (
 )
 
 type HttpServer struct {
-	Port        string        `yaml:"port" env-default:"8080"`
-	Timeout     time.Duration `yaml:"timeout" env-default:"3s"`
-	IdleTimeout time.Duration `yaml:"idle_timeout" env-default:"60s"`
+	Port         int64         `yaml:"port" env-default:"8080"`
+	Timeout      time.Duration `yaml:"timeout" env-default:"3s"`
+	ReadTimeout  time.Duration `yaml:"read_timeout" env-default:"5s"`
+	WriteTimeout time.Duration `yaml:"write_timeout" env-default:"10s"`
+	IdleTimeout  time.Duration `yaml:"idle_timeout" env-default:"60s"`
 }
 
 type Config struct {
 	Env         string
-	StoragePath string `yaml:"storage_path" env-required:"true"`
-	HttpServer  `yaml:"http_server"`
+	StoragePath string     `yaml:"storage_path" env-required:"true"`
+	HttpServer  HttpServer `yaml:"http_server"`
 }
 
 func New(env string) *Config {
